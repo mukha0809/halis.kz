@@ -1,1 +1,403 @@
+/* ==========================================================================
+   1. STRUCTURAL RESET & CORE SETUP
+   ========================================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    outline: none;
+}
 
+:root {
+    --bg-deep-space: #00060f;
+    --bg-dark-royal: #000e21;
+    --gold-base: #d4af37;
+    --gold-bright: #f4e3a4;
+    --gold-dark: #a88119;
+    --glass-fill: rgba(255, 255, 255, 0.015);
+    --glass-border: rgba(255, 255, 255, 0.06);
+    --glass-blur: blur(30px);
+    --font-premium-serif: 'Playfair Display', serif;
+    --font-main-sans: 'Montserrat', sans-serif;
+    --transition-smooth: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+    --neon-blue-glow: 0 0 40px rgba(0, 102, 255, 0.12);
+}
+
+::-webkit-scrollbar {
+    width: 7px;
+}
+::-webkit-scrollbar-track {
+    background: var(--bg-deep-space);
+}
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(var(--bg-dark-royal), var(--gold-base));
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--gold-bright);
+}
+
+html {
+    scroll-behavior: smooth;
+    text-size-adjust: 100%;
+}
+
+body {
+    background-color: var(--bg-deep-space);
+    color: #ffffff;
+    font-family: var(--font-main-sans);
+    overflow-x: hidden;
+    line-height: 1.75;
+    font-weight: 400;
+}
+
+.container {
+    width: 100%;
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0 30px;
+}
+
+.text-center { text-align: center; }
+.max-width-800 { max-width: 800px; margin: 0 auto; }
+
+/* ==========================================================================
+   2. LUXURY VISUAL BACKGROUNDS & ANIMATIONS
+   ========================================================================== */
+.glow-bg {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: -2;
+    overflow: hidden;
+    background: radial-gradient(circle at 50% 50%, #00122b 0%, #00060f 100%);
+}
+
+.orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(140px);
+    opacity: 0.25;
+    mix-blend-mode: screen;
+    animation: floatingOrbsEngine 14s infinite alternate ease-in-out;
+}
+
+.orb-1 { width: 550px; height: 550px; background: radial-gradient(#004cd0, transparent); top: -15%; left: -10%; }
+.orb-2 { width: 650px; height: 650px; background: radial-gradient(#001b3a, transparent); bottom: -25%; right: -15%; animation-delay: -5s; }
+.orb-3 { width: 450px; height: 450px; background: radial-gradient(var(--gold-dark), transparent); top: 35%; left: 55%; opacity: 0.12; animation-delay: -8s; }
+
+@keyframes floatingOrbsEngine {
+    0% { transform: translateY(0) scale(1) rotate(0deg); }
+    100% { transform: translateY(60px) scale(1.15) rotate(45deg); }
+}
+
+.scroll-progress-container {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 3px;
+    z-index: 2500;
+}
+.scroll-progress-bar {
+    height: 100%; width: 0%;
+    background: linear-gradient(90deg, var(--gold-base), var(--gold-bright));
+    box-shadow: 0 0 12px var(--gold-base);
+}
+
+/* ==========================================================================
+   3. GLASSMORPHISM STRUCTURES
+   ========================================================================== */
+.glass-card {
+    background: var(--glass-fill);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-radius: 24px;
+    box-shadow: 0 35px 70px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255,255,255,0.03);
+    transition: var(--transition-smooth);
+}
+.glass-card:hover {
+    border-color: rgba(214, 175, 55, 0.25);
+    box-shadow: 0 45px 80px rgba(0, 0, 0, 0.65), var(--neon-blue-glow);
+}
+
+/* ==========================================================================
+   4. NAVIGATION MENU DESIGN
+   ========================================================================== */
+header {
+    position: fixed;
+    width: 100%; top: 0; left: 0;
+    z-index: 1000; padding: 30px 0;
+    transition: var(--transition-smooth);
+}
+header.scrolled {
+    padding: 16px 0;
+    background: rgba(0, 6, 15, 0.9);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-bottom: 1px solid var(--glass-border);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.55);
+}
+.header-container { display: flex; justify-content: space-between; align-items: center; }
+.logo { font-size: 21px; font-weight: 700; letter-spacing: 2.5px; color: #ffffff; }
+.gold-accent { color: var(--gold-base); }
+.luxury-badge {
+    font-size: 9px; background: linear-gradient(135deg, var(--gold-base), var(--gold-dark));
+    color: #000000; padding: 3px 8px; border-radius: 5px;
+    vertical-align: middle; margin-left: 6px; font-weight: 700; letter-spacing: 0.5px;
+}
+.desktop-nav .nav-links { display: flex; align-items: center; gap: 30px; list-style: none; }
+.nav-item {
+    color: #cbd5e1; text-decoration: none; font-size: 12px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 1px; position: relative; padding: 6px 0; transition: var(--transition-smooth);
+}
+.nav-item:hover { color: #ffffff; }
+.nav-item::after {
+    content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 1px; background: var(--gold-base); transition: var(--transition-smooth);
+}
+.nav-item:hover::after { width: 100%; }
+.btn-gold-action {
+    border: 1px solid var(--gold-base); background: transparent; padding: 11px 26px;
+    border-radius: 50px; color: var(--gold-base); text-decoration: none;
+    font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; transition: var(--transition-smooth);
+}
+.btn-gold-action:hover {
+    background: linear-gradient(135deg, var(--gold-base), var(--gold-bright));
+    color: #000000; box-shadow: 0 0 25px rgba(212, 175, 55, 0.45); transform: scale(1.02);
+}
+
+/* Mobile responsive navigation overlay */
+.burger-menu { display: none; flex-direction: column; gap: 6px; cursor: pointer; }
+.burger-menu .line { width: 26px; height: 2px; background-color: #ffffff; transition: var(--transition-smooth); }
+.mobile-overlay {
+    position: fixed; top: 0; right: -100%; width: 100%; height: 100vh;
+    background: rgba(0, 6, 15, 0.99); backdrop-filter: blur(25px); z-index: 1600;
+    display: flex; justify-content: center; align-items: center; transition: all 0.6s cubic-bezier(0.77, 0, 0.175, 1);
+}
+.mobile-overlay.active { right: 0; }
+.close-overlay { position: absolute; top: 35px; right: 35px; font-size: 45px; color: var(--gold-base); cursor: pointer; }
+.mobile-nav-links { list-style: none; text-align: center; display: flex; flex-direction: column; gap: 35px; }
+.mob-link { color: #ffffff; text-decoration: none; font-size: 20px; font-family: var(--font-premium-serif); transition: var(--transition-smooth); }
+.mob-link:hover { color: var(--gold-base); }
+.mob-btn-gold { display: inline-block; border: 1px solid var(--gold-base); padding: 12px 40px; border-radius: 50px; color: var(--gold-base); text-decoration: none; font-weight: 700; }
+
+/* ==========================================================================
+   5. HERO LAYOUT SYSTEM
+   ========================================================================== */
+.hero-section { height: 100vh; display: flex; align-items: center; position: relative; padding-top: 90px; }
+.hero-wrapper { display: flex; justify-content: flex-start; width: 100%; }
+.hero-inner-box { max-width: 720px; padding: 55px; }
+.gold-tag { font-size: 11px; font-weight: 700; color: var(--gold-base); letter-spacing: 5px; display: inline-block; margin-bottom: 20px; }
+.main-title-premium { font-family: var(--font-premium-serif); font-size: 4.4rem; font-weight: 600; line-height: 1.15; color: #ffffff; margin-bottom: 30px; }
+.gradient-text-gold {
+    background: linear-gradient(90deg, #ffffff, var(--gold-bright), var(--gold-base), #ffffff);
+    background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: goldGlowShiftEngine 6s infinite linear;
+}
+@keyframes goldGlowShiftEngine { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
+.hero-description-text { font-size: 1.05rem; color: #cbd5e1; margin-bottom: 45px; font-weight: 300; }
+.hero-action-row { display: flex; gap: 20px; }
+.btn-luxury-primary {
+    background: linear-gradient(135deg, var(--gold-base), var(--gold-dark)); color: #000000;
+    padding: 17px 38px; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 13px;
+    letter-spacing: 0.5px; transition: var(--transition-smooth); box-shadow: 0 12px 28px rgba(212, 175, 55, 0.22);
+}
+.btn-luxury-primary:hover { transform: translateY(-5px); box-shadow: 0 18px 35px rgba(212, 175, 55, 0.45); }
+.btn-luxury-secondary {
+    border: 1px solid rgba(255, 255, 255, 0.12); background: rgba(255, 255, 255, 0.01);
+    color: #ffffff; padding: 17px 38px; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 13px; transition: var(--transition-smooth);
+}
+.btn-luxury-secondary:hover { background: #ffffff; color: #000000; transform: translateY(-5px); }
+
+.scroll-down-indicator { position: absolute; bottom: 35px; left: 50%; transform: translateX(-50%); text-align: center; opacity: 0.65; }
+.scroll-down-indicator p { font-size: 10px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; color: #94a3b8; }
+.mouse-icon { width: 20px; height: 34px; border: 2px solid #94a3b8; border-radius: 18px; margin: 0 auto; position: relative; }
+.mouse-icon .wheel {
+    width: 4px; height: 8px; background-color: var(--gold-base); border-radius: 2px;
+    position: absolute; top: 6px; left: 50%; transform: translateX(-50%); animation: structuralMouseAnimation 2s infinite;
+}
+@keyframes structuralMouseAnimation { 0% { opacity: 1; top: 6px; } 100% { opacity: 0; top: 18px; } }
+
+/* ==========================================================================
+   6. GLOBAL BLOCKS CONFIGURATION
+   ========================================================================== */
+.section-padding { padding: 130px 0; }
+.premium-section-title { text-align: center; margin-bottom: 70px; }
+.section-sub { font-size: 11px; font-weight: 700; color: var(--gold-base); letter-spacing: 5px; display: block; margin-bottom: 12px; }
+.section-main-heading { font-family: var(--font-premium-serif); font-size: 3.1rem; font-weight: 500; color: #ffffff; }
+.gold-divider { width: 70px; height: 2px; background: linear-gradient(90deg, transparent, var(--gold-base), transparent); margin: 22px auto 0 auto; }
+
+/* ==========================================================================
+   7. ABOUT SYSTEM
+   ========================================================================== */
+.about-grid-system { display: grid; grid-template-columns: 1.6fr 1fr; gap: 45px; align-items: stretch; }
+.about-text-card { padding: 55px; }
+.about-text-card h3 { font-family: var(--font-premium-serif); font-size: 1.9rem; color: var(--gold-bright); margin-bottom: 25px; }
+.about-text-card p { margin-bottom: 22px; color: #cbd5e1; font-size: 1.05rem; }
+.kazakh-text { border-left: 3px solid var(--gold-base); padding-left: 20px; font-style: italic; }
+.about-stats-card { display: flex; flex-direction: column; justify-content: space-around; padding: 45px; text-align: center; }
+.stat-box-luxury { padding: 18px 0; }
+.stat-number { display: block; font-family: var(--font-premium-serif); font-size: 3.4rem; color: #ffffff; font-weight: 700; }
+.stat-label { font-size: 11px; text-transform: uppercase; color: var(--gold-base); letter-spacing: 2.5px; font-weight: 600; }
+
+/* ==========================================================================
+   8. CORE ACTIVITIES DIRECTIONS
+   ========================================================================== */
+.four-column-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 35px; }
+.mission-luxury-card { padding: 45px 35px; text-align: center; }
+.icon-holder-3d {
+    width: 75px; height: 75px; background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    border: 1px solid var(--glass-border); border-radius: 22px; display: flex; align-items: center;
+    justify-content: center; margin: 0 auto 30px auto; font-size: 26px; color: var(--gold-base); transition: var(--transition-smooth);
+}
+.mission-luxury-card:hover .icon-holder-3d {
+    color: #000000; background: linear-gradient(135deg, var(--gold-base), var(--gold-bright));
+    transform: rotateY(180deg); box-shadow: 0 12px 26px rgba(212, 175, 55, 0.4);
+}
+.mission-luxury-card h3 { font-size: 1.3rem; margin-bottom: 18px; color: #ffffff; font-weight: 600; }
+.mission-luxury-card p { font-size: 0.9rem; color: #94a3b8; margin-bottom: 10px; }
+
+/* ==========================================================================
+   9. EXECUTIVE LEADERS SYSTEM
+   ========================================================================== */
+.leaders-luxury-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 45px; max-width: 960px; margin: 0 auto; }
+.team-luxury-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+.elite-member-card { cursor: pointer; }
+.card-inner-luxury { background: rgba(255, 255, 255, 0.008); border: 1px solid var(--glass-border); border-radius: 28px; padding: 22px; backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); transition: var(--transition-smooth); }
+.avatar-frame { width: 100%; height: 380px; overflow: hidden; border-radius: 22px; margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.04); }
+.avatar-image { width: 100%; height: 100%; object-fit: cover; filter: grayscale(40%) brightness(0.85); transition: var(--transition-smooth); }
+.elite-member-card:hover .card-inner-luxury { transform: translateY(-12px); border-color: var(--gold-base); box-shadow: 0 35px 65px rgba(0,0,0,0.7), 0 0 35px rgba(0, 102, 255, 0.08); }
+.elite-member-card:hover .avatar-image { filter: grayscale(0%) brightness(1.02); transform: scale(1.03); }
+.card-meta-luxury h3 { font-size: 1.3rem; color: #ffffff; margin-bottom: 8px; font-weight: 600; }
+.gold-role { font-size: 11px; color: var(--gold-base); text-transform: uppercase; letter-spacing: 2px; font-weight: 700; }
+
+/* ==========================================================================
+   10. TABS CONTROLLER (FIXED VISIBILITY PARAMS)
+   ========================================================================== */
+.tabs-luxury-wrapper { overflow: hidden; }
+.tabs-luxury-navigation { display: flex; background: rgba(0, 0, 0, 0.3); border-bottom: 1px solid var(--glass-border); }
+.tab-luxury-btn {
+    flex: 1; padding: 26px 20px; background: transparent; border: none; color: #94a3b8;
+    font-family: var(--font-main-sans); font-weight: 600; font-size: 13px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 12px; text-transform: uppercase; letter-spacing: 0.5px; transition: var(--transition-smooth);
+}
+.tab-luxury-btn:hover { color: #ffffff; background: rgba(255,255,255,0.01); }
+.tab-luxury-btn.active { color: var(--gold-base); background: rgba(255,255,255,0.02); box-shadow: inset 0 -3px 0 var(--gold-base); }
+.tabs-luxury-content-container { padding: 55px; }
+
+/* CRITICAL DISPLAY BUGFIX FOR ALL TABS */
+.tab-luxury-panel {
+    display: none;
+    opacity: 0;
+    transform: translateY(15px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.tab-luxury-panel.active {
+    display: flex;
+    flex-direction: column;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.panel-header-luxury h3 { font-family: var(--font-premium-serif); font-size: 2.1rem; color: var(--gold-bright); margin-bottom: 12px; }
+.panel-header-luxury p { color: #94a3b8; margin-bottom: 45px; font-weight: 300; }
+
+.step-by-step-luxury-timeline { position: relative; padding-left: 35px; }
+.step-by-step-luxury-timeline::before { content: ''; position: absolute; top: 0; left: 0; width: 1px; height: 100%; background: var(--glass-border); }
+.timeline-step { position: relative; margin-bottom: 45px; }
+.timeline-step:last-child { margin-bottom: 0; }
+.step-num-badge {
+    position: absolute; left: -51px; top: 0; width: 32px; height: 32px;
+    background: var(--bg-dark-royal); border: 1px solid var(--gold-base); border-radius: 50%;
+    color: var(--gold-base); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700;
+}
+.step-data h4 { font-size: 1.2rem; color: #ffffff; margin-bottom: 12px; }
+.step-data p { color: #cbd5e1; font-weight: 300; margin-bottom: 8px; }
+
+.bank-info-rich-layout, .transport-methods-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; margin-bottom: 35px; width: 100%; }
+.bank-card-luxury, .method-luxury-box { background: rgba(0,0,0,0.2); padding: 35px; border-radius: 20px; border: 1px solid var(--glass-border); }
+.bank-card-luxury h5, .method-luxury-box h4 { font-size: 1.25rem; color: var(--gold-base); margin-bottom: 15px; }
+.critical-info-box-luxury { display: flex; gap: 20px; align-items: center; background: rgba(212, 175, 55, 0.04); border: 1px solid rgba(212, 175, 55, 0.2); padding: 30px; border-radius: 20px; width: 100%; }
+.critical-info-box-luxury i { font-size: 26px; color: var(--gold-base); }
+.safety-cards-container { display: flex; flex-direction: column; gap: 30px; width: 100%; }
+.safety-bullet { display: flex; gap: 25px; background: rgba(255,255,255,0.005); padding: 30px; border-radius: 20px; border: 1px solid var(--glass-border); }
+
+/* ==========================================================================
+   11. FAQ COMPONENTS
+   ========================================================================== */
+.faq-accordion-container { display: flex; flex-direction: column; gap: 25px; }
+.faq-item-luxury { overflow: hidden; border-radius: 20px; }
+.faq-trigger { padding: 28px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-weight: 600; background: rgba(255,255,255,0.005); transition: var(--transition-smooth); }
+.faq-trigger:hover { color: var(--gold-bright); }
+.faq-trigger i { transition: transform 0.5s ease; color: var(--gold-base); margin-left: 20px; }
+.faq-item-luxury.open .faq-trigger i { transform: rotate(180deg); }
+.faq-response { max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(1, 0, 0, 1); background: rgba(0,0,0,0.15); }
+.faq-response p { padding: 30px; color: #cbd5e1; font-weight: 300; border-top: 1px solid var(--glass-border); }
+
+/* ==========================================================================
+   12. INTERACTIVE POPUP WINDOW
+   ========================================================================== */
+.luxury-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; z-index: 3000; }
+.modal-backdrop-blur { position: absolute; width: 100%; height: 100%; background: rgba(0, 3, 8, 0.96); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+.modal-window-luxury { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 92%; max-width: 940px; padding: 55px; z-index: 3100; }
+.animate-popup { animation: popupAnimationScale 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards; }
+@keyframes popupAnimationScale { from { opacity: 0; transform: translate(-50%, -46%) scale(0.96); } to { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
+.close-luxury-modal { position: absolute; top: 30px; right: 35px; font-size: 38px; cursor: pointer; transition: var(--transition-smooth); }
+.close-luxury-modal:hover { color: var(--gold-base); }
+.modal-layout-grid { display: grid; grid-template-columns: 1fr 1.25fr; gap: 50px; align-items: center; }
+.modal-big-photo { width: 100%; max-height: 490px; object-fit: cover; border-radius: 22px; border: 1px solid rgba(255,255,255,0.08); }
+.modal-name-heading { font-family: var(--font-premium-serif); font-size: 2.3rem; }
+.accent-line-gold { width: 65px; height: 2px; background: var(--gold-base); margin: 22px 0; }
+.modal-bio-paragraph { color: #cbd5e1; font-size: 1.05rem; margin-bottom: 35px; }
+.quote-wrapper-luxury { background: rgba(255,255,255,0.005); border-left: 3px solid var(--gold-base); padding: 22px; border-radius: 0 20px 20px 0; }
+.modal-quote-text { font-family: var(--font-premium-serif); font-size: 1.25rem; font-style: italic; color: var(--gold-bright); }
+
+/* ==========================================================================
+   13. FOOTER ARRAYS
+   ========================================================================== */
+.luxury-footer { background: rgba(0, 3, 8, 0.85); border-top: 1px solid var(--glass-border); padding: 90px 0 35px 0; }
+.footer-inner-flex { display: grid; grid-template-columns: 1.5fr 0.8fr 1.7fr; gap: 55px; margin-bottom: 55px; }
+.footer-branding-block h4 { font-size: 19px; font-weight: 700; letter-spacing: 2px; margin-bottom: 22px; }
+.footer-branding-block p { color: #94a3b8; font-size: 0.95rem; }
+.footer-navigation-block h5, .footer-contacts-block h5 { font-size: 12px; text-transform: uppercase; color: var(--gold-base); letter-spacing: 2px; margin-bottom: 22px; }
+.footer-links-list { list-style: none; }
+.footer-links-list li { margin-bottom: 14px; }
+.footer-links-list a { color: #cbd5e1; text-decoration: none; font-size: 14px; transition: var(--transition-smooth); }
+.footer-links-list a:hover { color: var(--gold-base); padding-left: 6px; }
+.action-buttons-footer-row { display: flex; gap: 18px; }
+.footer-action-btn {
+    flex: 1; padding: 15px 22px; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 13px;
+    color: #ffffff; display: inline-flex; align-items: center; justify-content: center; gap: 12px; transition: var(--transition-smooth);
+}
+.footer-action-btn.wa-style { background-color: #22c55e; }
+.footer-action-btn.insta-style { background: linear-gradient(45deg, #f09433, #dc2743, #bc1888); }
+.footer-action-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 24px rgba(0,0,0,0.4); }
+.footer-bottom-bar { border-top: 1px solid rgba(255,255,255,0.04); padding-top: 35px; color: #64748b; font-size: 0.85rem; }
+
+/* ==========================================================================
+   14. SYSTEM SCROLL REVEAL SCENARIO
+   ========================================================================== */
+.scroll-reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
+.scroll-reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ==========================================================================
+   15. ADAPTIVE MEDIA QUERY LAYER
+   ========================================================================== */
+@media (max-width: 1024px) {
+    .main-title-premium { font-size: 3.5rem; }
+    .team-luxury-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+    .desktop-nav { display: none; }
+    .burger-menu { display: flex; }
+    .section-main-heading { font-size: 2.1rem; }
+    .about-grid-system { grid-template-columns: 1fr; }
+    .leaders-luxury-row, .team-luxury-grid { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; }
+    .tabs-luxury-navigation { flex-direction: column; }
+    .bank-info-rich-layout, .transport-methods-grid { grid-template-columns: 1fr; }
+    .modal-layout-grid { grid-template-columns: 1fr; gap: 30px; }
+    .modal-window-luxury { padding: 35px 25px; width: 95%; max-height: 85vh; overflow-y: auto; }
+    .footer-inner-flex { grid-template-columns: 1fr; gap: 40px; text-align: center; }
+    .action-buttons-footer-row { flex-direction: column; }
+    .main-title-premium { font-size: 2.6rem; }
+    .hero-inner-box { padding: 35px 25px; }
+    .tabs-luxury-content-container { padding: 30px 20px; }
+}
